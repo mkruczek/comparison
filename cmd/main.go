@@ -4,9 +4,13 @@ import (
 	"comparasion/pointers"
 	"comparasion/resources"
 	"log"
+
+	"net/http"
+	_ "net/http/pprof"
 )
 
 func main() {
+	go http.ListenAndServe(":6060", nil)
 
 	repo := resources.NewRepository()
 	service := resources.NewService(repo)
