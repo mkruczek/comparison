@@ -1,7 +1,7 @@
 package main
 
 import (
-	"comparasion/pointers"
+	"comparasion/callback"
 	"comparasion/resources"
 	"log"
 
@@ -15,7 +15,8 @@ func main() {
 	repo := resources.NewRepository()
 	service := resources.NewService(repo)
 
-	s := pointers.NewServer(&service)
+	//s := pointers.NewServer(&service)
+	s := callback.NewServer(service)
 	s.SetRouters()
 
 	if err := s.Start(":8088"); err != nil {
