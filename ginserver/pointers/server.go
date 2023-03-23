@@ -2,6 +2,7 @@ package pointers
 
 import (
 	"comparasion/resources"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
@@ -9,13 +10,12 @@ import (
 
 type Server struct {
 	*gin.Engine
-	service *resources.Service
+	service resources.Service
 }
 
-func NewServer(service *resources.Service) *Server {
+func NewServer() *Server {
 	return &Server{
-		Engine:  gin.Default(),
-		service: service,
+		Engine: gin.Default(),
 	}
 }
 
@@ -23,9 +23,12 @@ func (s *Server) Start(port string) error {
 	return s.Run(port)
 }
 
-func (s *Server) SetRouters() {
+func (s *Server) SetService(service resources.Service) {
+	s.service = service
+}
 
-	apiV1Group := s.Group("/api/v1")
+func (s *Server) SetRouters(version string) {
+	apiV1Group := s.Group(fmt.Sprintf("/api/%s", version))
 	apiV1Group.POST("/resources", s.createResources)
 	apiV1Group.GET("/resources", s.getAllResources)
 	apiV1Group.GET("/resources/:id", s.getResources)
