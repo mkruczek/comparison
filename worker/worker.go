@@ -15,9 +15,9 @@ import (
 func main() {
 
 	go work(common.GinPointers, common.GinPointersPort)
-	go work(common.EchoPointers, common.EchoPointersPort)
-	go work(common.EchoCallback, common.EchoCallbackPort)
 	go work(common.GinCallback, common.GinCallbackPort)
+	go work(common.EchoCallback, common.EchoCallbackPort)
+	go work(common.EchoPointers, common.EchoPointersPort)
 
 	select {}
 }
@@ -30,7 +30,9 @@ func work(version, port string) {
 	var resp *http.Response
 	var resource resources.Resources
 
-	for {
+	start := time.Now()
+	var total int
+	for i := 0; i < 100000; i++ {
 
 		c := http.Client{Timeout: time.Duration(1) * time.Second}
 
@@ -104,10 +106,13 @@ func work(version, port string) {
 			log.Printf("Worker %s Error at 104 %s", version, err)
 			goto FINISH
 		}
-
+		total++
 	FINISH:
-		time.Sleep(10 * time.Second)
+		if i%10000 == 0 {
+			fmt.Printf("Worker %s: %d requests.\n", version, i)
+		}
 
 	}
 
+	fmt.Printf("Worker %s finished: %d requests in %s.\n", version, total, time.Since(start))
 }

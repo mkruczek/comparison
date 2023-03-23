@@ -1,4 +1,4 @@
-package callback
+package pointers
 
 import (
 	"comparasion/resources"

@@ -14,8 +14,11 @@ type Server struct {
 }
 
 func NewServer() *Server {
+	g := gin.New()
+	gin.SetMode(gin.ReleaseMode)
+	gin.LoggerWithWriter(gin.DefaultWriter, "/api/v1/resources")
 	return &Server{
-		Engine: gin.Default(),
+		Engine: g,
 	}
 }
 
