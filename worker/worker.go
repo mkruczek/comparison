@@ -1,9 +1,9 @@
-package main
+package worker
 
 import (
 	"bytes"
-	"comparasion/common"
 	"comparasion/resources"
+	"comparasion/value"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -14,15 +14,15 @@ import (
 
 func main() {
 
-	go work(common.GinPointers, common.GinPointersPort)
-	go work(common.GinCallback, common.GinCallbackPort)
-	go work(common.EchoCallback, common.EchoCallbackPort)
-	go work(common.EchoPointers, common.EchoPointersPort)
+	go Do(value.GinPointers, value.GinPointersPort)
+	go Do(value.GinCallback, value.GinCallbackPort)
+	go Do(value.EchoCallback, value.EchoCallbackPort)
+	go Do(value.EchoPointers, value.EchoPointersPort)
 
 	select {}
 }
 
-func work(version, port string) {
+func Do(version, port string) {
 
 	url := fmt.Sprintf("http://localhost%s/api/%s/resources", port, version)
 

@@ -1,4 +1,4 @@
-package common
+package value
 
 const (
 	GinPointers      = "ginpointers"
